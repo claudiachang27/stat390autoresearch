@@ -2,7 +2,7 @@
 
 ## Objective
 
-Minimize **validation RMSE** on the California Housing regression task.
+Maximize **AUC-ROC** on the Predicting Series A Startup task.
 
 ## Rules
 
@@ -19,7 +19,7 @@ Minimize **validation RMSE** on the California Housing regression task.
 2. Propose a modification
 3. Edit model.py
 4. Run:  python run.py "description of change"
-5. Check val_rmse in output
+5. Check val_auc in output
 6. If improved:  git add model.py && git commit -m "feat: <description>"
 7. If worse:     git checkout model.py   (revert)
 8. Repeat from step 1
@@ -27,12 +27,11 @@ Minimize **validation RMSE** on the California Housing regression task.
 
 ## Ideas to explore
 
-- Different regressors: Ridge, Lasso, ElasticNet, SVR
-- Ensemble methods: RandomForest, GradientBoosting, HistGradientBoosting
+- Different classifiers: LogisticRegression, RandomForestClassifier, GradientBoostingClassifier
 - Feature engineering: PolynomialFeatures, interaction terms
 - Preprocessing: RobustScaler, QuantileTransformer
-- Target transform: TransformedTargetRegressor with log
 - Hyperparameter tuning within the pipeline
+- Class imbalance handling: class_weight='balanced'
 
 ## What NOT to do
 
