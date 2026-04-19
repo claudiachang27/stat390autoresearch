@@ -46,6 +46,7 @@ def load_data():
         .rename(columns={"raised_amount_usd": "total_seed_usd"})
     )
     companies = companies.merge(seed_total, left_on="permalink", right_on="company_permalink", how="left")
+    companies.drop(columns=["company_permalink"], inplace=True)
 
     # ── Feature: number of seed rounds ─────────────────────
     seed_count = (
@@ -54,6 +55,7 @@ def load_data():
         .reset_index(name="num_seed_rounds")
     )
     companies = companies.merge(seed_count, left_on="permalink", right_on="company_permalink", how="left")
+    companies.drop(columns=["company_permalink"], inplace=True)
 
     # ── Feature: number of total investors ─────────────────
     investor_count = (
@@ -62,6 +64,7 @@ def load_data():
         .reset_index(name="num_investors")
     )
     companies = companies.merge(investor_count, left_on="permalink", right_on="company_permalink", how="left")
+    companies.drop(columns=["company_permalink"], inplace=True)
 
     # ── Feature: number of distinct investors ──────────────
     distinct_investors = (
@@ -70,13 +73,14 @@ def load_data():
         .reset_index(name="num_distinct_investors")
     )
     companies = companies.merge(distinct_investors, left_on="permalink", right_on="company_permalink", how="left")
+    companies.drop(columns=["company_permalink"], inplace=True)
 
     # ── Feature: was company acquired ──────────────────────
     acquired = set(acquisitions["company_permalink"].dropna())
     companies["was_acquired"] = companies["permalink"].isin(acquired).astype(int)
 
     # ── Feature: days from founding to first funding ───────
-    companies["founded_at"]      = pd.to_datetime(companies["founded_at"],      errors="coerce")
+    companies["founded_at"]       = pd.to_datetime(companies["founded_at"],       errors="coerce")
     companies["first_funding_at"] = pd.to_datetime(companies["first_funding_at"], errors="coerce")
     companies["days_to_first_funding"] = (
         companies["first_funding_at"] - companies["founded_at"]
@@ -143,58 +147,4 @@ def plot_results(save_path="performance.png"):
     with open(RESULTS_FILE) as f:
         reader = csv.DictReader(f, delimiter="\t")
         for row in reader:
-            experiments.append(row["experiment"])
-            aucs.append(float(row["val_auc"]))
-            statuses.append(row["status"])
-            descriptions.append(row["description"])
-
-    color_map = {"keep": "#2ecc71", "discard": "#e74c3c", "baseline": "#3498db"}
-    colors = [color_map.get(s, "#95a5a6") for s in statuses]
-
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    ax.scatter(range(len(aucs)), aucs, c=colors, s=80, zorder=3,
-               edgecolors="white", linewidth=0.5)
-    ax.plot(range(len(aucs)), aucs, "k--", alpha=0.2, zorder=2)
-
-    # Best-so-far envelope (higher is better)
-    best_so_far, current_best = [], -float("inf")
-    for a in aucs:
-        current_best = max(current_best, a)
-        best_so_far.append(current_best)
-    ax.plot(range(len(aucs)), best_so_far, color="#2ecc71",
-            linewidth=2.5, label="Best so far")
-
-    ax.set_ylabel("Validation AUC-ROC (higher is better)", fontsize=12)
-    ax.set_xlabel("Experiment #", fontsize=12)
-    ax.set_title(
-        "AutoResearch: Predicting Series A Funding Success\n"
-        "Founder Pedigree vs. Capital & Investor Signals",
-        fontsize=13, fontweight="bold"
-    )
-    ax.set_ylim(max(0.4, min(aucs) - 0.05), min(1.0, max(aucs) + 0.05))
-    ax.grid(True, alpha=0.3)
-
-    short_labels = [d[:22] + ".." if len(d) > 24 else d for d in descriptions]
-    ax.set_xticks(range(len(aucs)))
-    ax.set_xticklabels(short_labels, rotation=45, ha="right", fontsize=8)
-
-    from matplotlib.lines import Line2D
-    legend_elements = [
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#3498db",
-               markersize=10, label="baseline"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#2ecc71",
-               markersize=10, label="keep (improved)"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#e74c3c",
-               markersize=10, label="discard (regressed)"),
-        Line2D([0], [0], color="#2ecc71", linewidth=2.5, label="Best so far"),
-    ]
-    ax.legend(handles=legend_elements, loc="lower right", fontsize=9)
-
-    plt.tight_layout()
-    plt.savefig(save_path, dpi=150, bbox_inches="tight")
-    print(f"Saved {save_path}")
-
-
-if __name__ == "__main__":
-    plot_results()
+            experiments.append(r
