@@ -19,17 +19,14 @@ DATA_DIR = "data"
 # ── Data ───────────────────────────────────────────────────
 def load_data():
     """
-    Load and merge Crunchbase CSVs. Build features relevant to:
-      - Founder demographics / educational pedigree
-      - Early-stage capital injection
-      - Investor prestige
+    Load and merge Crunchbase CSVs.
     Target: did the company reach a Series A round? (1 = yes, 0 = no)
     """
     # Load CSVs
-    companies     = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-companies.csv"))
-    rounds        = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-rounds.csv"))
-    investments   = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-investments.csv"))
-    acquisitions  = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-acquisitions.csv"))
+    companies    = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-companies.csv"), encoding="latin-1")
+    rounds       = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-rounds.csv"), encoding="latin-1")
+    investments  = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-investments.csv"), encoding="latin-1", low_memory=False)
+    acquisitions = pd.read_csv(os.path.join(DATA_DIR, "crunchbase-acquisitions.csv"), encoding="latin-1")
 
     # ── Target: reached Series A ───────────────────────────
     series_a_companies = set(
@@ -38,9 +35,7 @@ def load_data():
             "company_permalink"
         ].dropna()
     )
-    companies["reached_series_a"] = (
-        companies["permalink"].isin(series_a_companies)
-    ).astype(int)
+    companies["reached_series_a"] = companies["permalink"].isin(series_a_companies).astype(int)
 
     # ── Feature: total seed funding ────────────────────────
     seed_rounds = rounds[rounds["funding_round_type"].str.lower().str.strip() == "seed"]
@@ -60,7 +55,7 @@ def load_data():
     )
     companies = companies.merge(seed_count, left_on="permalink", right_on="company_permalink", how="left")
 
-    # ── Feature: number of early investors ─────────────────
+    # ── Feature: number of total investors ─────────────────
     investor_count = (
         investments.groupby("company_permalink")
         .size()
@@ -68,8 +63,7 @@ def load_data():
     )
     companies = companies.merge(investor_count, left_on="permalink", right_on="company_permalink", how="left")
 
-    # ── Feature: investor prestige (unique investor names) ─
-    # Proxy: number of distinct investors (more = broader network)
+    # ── Feature: number of distinct investors ──────────────
     distinct_investors = (
         investments.groupby("company_permalink")["investor_permalink"]
         .nunique()
@@ -77,35 +71,26 @@ def load_data():
     )
     companies = companies.merge(distinct_investors, left_on="permalink", right_on="company_permalink", how="left")
 
-    # ── Feature: was company acquired (exit signal) ────────
+    # ── Feature: was company acquired ──────────────────────
     acquired = set(acquisitions["company_permalink"].dropna())
     companies["was_acquired"] = companies["permalink"].isin(acquired).astype(int)
 
-    # ── Feature: company age at first funding (days) ───────
-    companies["founded_at"] = pd.to_datetime(companies["founded_at"], errors="coerce")
-    first_funding = (
-        rounds.groupby("company_permalink")["funded_at"]
-        .min()
-        .reset_index()
-        .rename(columns={"funded_at": "first_funding_at"})
-    )
-    first_funding["first_funding_at"] = pd.to_datetime(first_funding["first_funding_at"], errors="coerce")
-    companies = companies.merge(first_funding, left_on="permalink", right_on="company_permalink", how="left")
+    # ── Feature: days from founding to first funding ───────
+    companies["founded_at"]      = pd.to_datetime(companies["founded_at"],      errors="coerce")
+    companies["first_funding_at"] = pd.to_datetime(companies["first_funding_at"], errors="coerce")
     companies["days_to_first_funding"] = (
         companies["first_funding_at"] - companies["founded_at"]
     ).dt.days
 
-    # ── Feature: category / market (encoded) ───────────────
+    # ── Feature: categorical encodings ─────────────────────
     companies["category_code_enc"] = companies["category_code"].astype("category").cat.codes
-
-    # ── Feature: country (encoded) ─────────────────────────
-    companies["country_code_enc"] = companies["country_code"].astype("category").cat.codes
-
-    # ── Feature: state (encoded) ───────────────────────────
-    companies["state_code_enc"] = companies["state_code"].astype("category").cat.codes
+    companies["country_code_enc"]  = companies["country_code"].astype("category").cat.codes
+    companies["state_code_enc"]    = companies["state_code"].astype("category").cat.codes
 
     # ── Assemble feature matrix ─────────────────────────────
     FEATURE_COLS = [
+        "funding_total_usd",
+        "funding_rounds",
         "total_seed_usd",
         "num_seed_rounds",
         "num_investors",
@@ -117,13 +102,8 @@ def load_data():
         "state_code_enc",
     ]
 
-    # Drop companies that already have a Series A
-    # (only keep seed-stage or earlier as training pool)
-    X = companies[FEATURE_COLS].copy()
+    X = companies[FEATURE_COLS].copy().fillna(-1).values.astype(float)
     y = companies["reached_series_a"].values
-
-    X = X.fillna(-1)  # simple imputation; model.py can override
-    X = X.values.astype(float)
 
     X_train, X_val, y_train, y_val = train_test_split(
         X, y, test_size=VAL_FRACTION, random_state=RANDOM_SEED, stratify=y
@@ -138,8 +118,7 @@ def evaluate(model, X_val, y_val):
         y_score = model.predict_proba(X_val)[:, 1]
     else:
         y_score = model.decision_function(X_val)
-    auc = float(roc_auc_score(y_val, y_score))
-    return auc
+    return float(roc_auc_score(y_val, y_score))
 
 
 # ── Logging ────────────────────────────────────────────────
@@ -179,8 +158,7 @@ def plot_results(save_path="performance.png"):
     ax.plot(range(len(aucs)), aucs, "k--", alpha=0.2, zorder=2)
 
     # Best-so-far envelope (higher is better)
-    best_so_far = []
-    current_best = -float("inf")
+    best_so_far, current_best = [], -float("inf")
     for a in aucs:
         current_best = max(current_best, a)
         best_so_far.append(current_best)
@@ -188,6 +166,7 @@ def plot_results(save_path="performance.png"):
             linewidth=2.5, label="Best so far")
 
     ax.set_ylabel("Validation AUC-ROC (higher is better)", fontsize=12)
+    ax.set_xlabel("Experiment #", fontsize=12)
     ax.set_title(
         "AutoResearch: Predicting Series A Funding Success\n"
         "Founder Pedigree vs. Capital & Investor Signals",
