@@ -51,13 +51,12 @@ def main():
     print(f"Training time: {train_time:.2f}s")
 
     # 4. Evaluate (frozen metric)
-    val_rmse, val_r2 = evaluate(model, X_val, y_val)
-    print(f"val_rmse: {val_rmse:.6f}")
-    print(f"val_r2:   {val_r2:.6f}")
+    val_auc = evaluate(model, X_val, y_val)
+    print(f"val_auc: {val_auc:.6f}")
 
     # 5. Log
     commit = get_git_hash()
-    log_result(commit, val_rmse, val_r2, status, description)
+    log_result(commit, val_auc, status, description)
     print(f"Result logged to results.tsv (status={status})")
 
 
