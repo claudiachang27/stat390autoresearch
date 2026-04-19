@@ -160,7 +160,7 @@ Then enter the AutoResearch loop:
    feature engineering, hyperparameter change).
 2. Edit model.py with your change.
 3. Run: python run.py "<short description of what you changed>"
-4. Compare the new val_rmse to the current best.
+4. Compare the new val_auc to the current best.
    - If improved: KEEP the change, note the new best.
    - If worse: REVERT model.py to the previous version.
 5. Repeat from step 1. Try at least 6 different ideas.
