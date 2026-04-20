@@ -1,15 +1,10 @@
-# AutoResearch Demo: California Housing Regression
-
-A minimal, CPU-only AutoResearch project for **STAT 390** class demonstration.
-Shows the full agent loop: modify code → evaluate → keep or discard → repeat.
-
----
+# Series A Success
 
 ## Problem
 
-Predict California median house values.
-**Metric**: validation RMSE (lower is better).
-**Data**: sklearn built-in California Housing (no download needed).
+I will be predicting if a start-up will make it to Series A.
+**Metric**: validation AUC-ROC (higher is better).
+**Data**: crunchbase CSVs (no download needed).
 
 ## Project Structure
 
