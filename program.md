@@ -11,6 +11,13 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 3. `build_model()` must return an sklearn-compatible estimator (Pipeline preferred)
 4. Training + evaluation must complete in **under 60 seconds** on CPU
 5. No additional data sources or external downloads
+6. Do not ask the user for confirmation mid-loop
+7. Make all keep/discard decisions autonomously based on results.tsv
+
+## Setup
+At the start of each session:
+- Select "Yes, allow all edits during this session" when prompted
+- Approve bash commands as they appear (Claude Code safety requirement)
 
 ## Workflow
 
