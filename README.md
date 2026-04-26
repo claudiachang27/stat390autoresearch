@@ -3,19 +3,28 @@
 ## Problem
 
 I will be predicting if a start-up will make it to Series A.
+
 **Metric**: validation AUC-ROC (higher is better).
+
 **Data**: crunchbase CSVs (no download needed).
 
 ## Project Structure
 
 ```
-demo_autoresearch/
-├── prepare.py      # FROZEN — data loading, evaluation metric, plotting
-├── model.py        # EDITABLE — agent modifies only this file
-├── run.py          # Run a single experiment and log result
-├── program.md      # Agent instructions (the agent reads this)
-├── results.tsv     # Experiment log (auto-generated)
-└── performance.png # Performance plot (auto-generated)
+predictive-series-a/
+├── README.md              # Setup and instructions on how to run agent
+├── program.md             # Agent’s Goal: “Predict Series A success with AUC > 0.75
+├── prepare.py   # FROZEN: loads crunchbase CSVs, splits data, calculates AUC-ROC
+├── model.py        #AGENT-MUTABLE: agent tries XGBoost, RandomForest setups
+├── run.py            # FROZEN: executes one training loop, appends results to results.tsv
+├── results.tsv            # Log of all experiments: timestamp, features used, AUC-ROC
+├── performance.png        # Plot showing AUC improving over time (iterations)
+├── .gitignore             # Ignore local data files, pycache
+└── data/                   # Store Crunchbase CSV files
+    └── crunchbase-acquisitions.csv
+    └── crunchbase-companies.csv
+    └── crunchbase-investments.csv
+    └── crunchbase-rounds.csv
 ```
 
 **Key rule**: the agent may only modify `model.py`. Everything else is frozen.
@@ -177,11 +186,11 @@ Constraints:
 - Each experiment must finish in < 60 seconds
 
 Search strategy:
-1. Start with baseline (LinearRegression)
-2. Try regularized linear models (Ridge, Lasso, ElasticNet)
-3. Try feature engineering (PolynomialFeatures, interactions)
-4. Try tree ensembles (RandomForest, GradientBoosting, HistGradientBoosting)
-5. Try hyperparameter tuning on the best model so far
+1. Start with baseline (LogisticRegression)
+2. Try feature engineering (PolynomialFeatures, interactions)
+3. Re-test LogisticRegression to see if it closes the gap with non-linear models
+4. Try non-linear models (XGBoost and RandomForest) on engineered features
+5. Hyperparameter tune the best model
 
 For each experiment:
 - Run: python run.py "<description>"
