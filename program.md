@@ -25,6 +25,17 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 8. Repeat from step 1
 ```
 
+## Keep / Discard / Crash Rule
+- KEEP: val_auc strictly greater than the best val_auc in results.tsv → commit
+- DISCARD: val_auc less than or equal to best → git checkout model.py, no commit
+- CRASH: run.py errors or no new row appears in results.tsv → log a row manually with status="crash" and the error message, then git checkout model.py
+
+## Logging
+Every run must produce exactly one new row in results.tsv with fields:
+experiment | val_auc | status | description
+Status must be one of: keep, discard, crash
+The agent must never skip this step.
+
 ## Ideas to explore
 
 - Different classifiers: LogisticRegression, RandomForestClassifier, GradientBoostingClassifier
