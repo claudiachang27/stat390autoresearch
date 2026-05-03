@@ -13,6 +13,7 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 5. No additional data sources or external downloads
 6. Do not ask the user for confirmation mid-loop
 7. Make all keep/discard decisions autonomously based on results.tsv
+8. Only modify one variable value at a time and fix all other conditions.
 
 ## Setup
 At the start of each session:
@@ -40,13 +41,17 @@ At the start of each session:
 ## Logging
 Every run must produce exactly one new row in results.tsv with fields:
 
-experiment | val_auc | status | description
+Experiment ID | val_auc | status | description
+
+Experiment should be a number (like 1, 2, 3, etc).
+
+val_auc is our pre-defined metric that will be used to determine the status value.
+
+The description should include the one variable changed, the value tested, all fixed conditions, and a confidence note (explain why it is reliable).
 
 Status must be one of: keep, discard, crash
 
 The agent must never skip this step.
-
-Run ID, Variable Changed, Value Tested, All Fixed Conditions, Pre-defined Metric, Result, Confidence Note
 
 ## Ideas to explore
 
