@@ -184,6 +184,7 @@ def load_data():
     companies["has_us_investor"] = (companies["_us_inv_count"].fillna(0) > 0).astype(int)
 
     # ── Assemble & split ───────────────────────────────────
+    companies[FEATURE_COLS] = companies[FEATURE_COLS].apply(pd.to_numeric, errors='coerce')
     X = companies[FEATURE_COLS].copy().fillna(-1).values.astype(float)
     y = companies["reached_series_a"].values
 
