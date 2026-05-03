@@ -97,3 +97,5 @@ If all queued experiments are complete, you may vary one feature selection param
 - Do not add new files or dependencies
 - Do not hard-code validation data into the model
 - Do not change the function signature of `build_model()`
+- Do not perform exploratory data analysis or leakage checks
+- Do not deviate from the experiment queue
