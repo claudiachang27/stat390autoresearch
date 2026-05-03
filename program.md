@@ -65,14 +65,18 @@ Run these in order, one at a time. Do not change the model architecture or weigh
 Baseline Consistency (All Features)
 
 1a. Value: All features (Run 1)
+
 1b. Value: All features (Run 2)
+
 1c. Value: All features (Run 3)
 
 Mutual Information (MI) Sensitivity
 
-2a. Variable: MI Feature Count | Value: 10
-2b. Variable: MI Feature Count | Value: 20
-2c. Variable: MI Feature Count | Value: 30
+2a. Variable: MI Feature Count | Value: 5
+
+2b. Variable: MI Feature Count | Value: 10
+
+2c. Variable: MI Feature Count | Value: 15
 
 After the full experiment queue is complete, identify the best performing feature selection method and repeat it 3 times to confirm stability. Do not repeat any other experiments unless a crash occurs.
 
