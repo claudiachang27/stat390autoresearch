@@ -39,9 +39,14 @@ At the start of each session:
 
 ## Logging
 Every run must produce exactly one new row in results.tsv with fields:
+
 experiment | val_auc | status | description
+
 Status must be one of: keep, discard, crash
+
 The agent must never skip this step.
+
+Run ID, Variable Changed, Value Tested, All Fixed Conditions, Pre-defined Metric, Result, Confidence Note
 
 ## Ideas to explore
 
