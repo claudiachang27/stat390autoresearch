@@ -248,3 +248,62 @@ def engineer_features(X_train, X_val, feature_cols, degree=2):
           f"engineered features: {len(eng_cols)}  (degree={degree})")
 
     return X_train_eng, X_val_eng, eng_cols
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 3.  Evaluation
+# ══════════════════════════════════════════════════════════════════════════════
+
+def evaluate(model, X_val, y_val):
+    """Compute validation AUC-ROC (higher is better)."""
+    from sklearn.metrics import roc_auc_score
+    if hasattr(model, "predict_proba"):
+        y_score = model.predict_proba(X_val)[:, 1]
+    else:
+        y_score = model.decision_function(X_val)
+    return roc_auc_score(y_val, y_score)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 4.  Logging
+# ══════════════════════════════════════════════════════════════════════════════
+
+def log_result(experiment_id, val_auc, status, variable_changed, value_tested, fixed_conditions, confidence_note):
+    """
+    Append one row to results.tsv.
+
+    Fields
+    ------
+    experiment_id    : int — auto-incremented run number (1, 2, 3, ...)
+    val_auc          : float — AUC-ROC on validation set
+    status           : str — one of: keep, discard, crash
+    variable_changed : str — the single variable modified this run
+    value_tested     : str — the specific value that was tested
+    fixed_conditions : str — all conditions held constant
+    confidence_note  : str — why the result is or isn't reliable
+    """
+    import csv
+    RESULTS_FILE = "results.tsv"
+    fieldnames = [
+        "experiment_id",
+        "val_auc",
+        "status",
+        "variable_changed",
+        "value_tested",
+        "fixed_conditions",
+        "confidence_note",
+    ]
+    file_exists = os.path.exists(RESULTS_FILE)
+    with open(RESULTS_FILE, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter="\t")
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow({
+            "experiment_id":    experiment_id,
+            "val_auc":          round(float(val_auc), 6),
+            "status":           status,
+            "variable_changed": variable_changed,
+            "value_tested":     value_tested,
+            "fixed_conditions": fixed_conditions,
+            "confidence_note":  confidence_note,
+        })
