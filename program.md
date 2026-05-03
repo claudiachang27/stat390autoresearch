@@ -41,19 +41,49 @@ At the start of each session:
 ## Logging
 Every run must produce exactly one new row in results.tsv with fields:
 
-Experiment ID | val_auc | status | description
+Experiment ID | val_auc | status | variable_changed | value_tested | fixed_conditions | confidence_note
 
 Experiment should be a number (like 1, 2, 3, etc).
 
 val_auc is our pre-defined metric that will be used to determine the status value.
 
-The description should include the one variable changed, the value tested, all fixed conditions, and a confidence note (explain why it is reliable).
+variable_changed should be the variable changed.
+
+value_tested is the new value of the changed variable.
+
+fixed_conditions are the conditions that are held constant.
+
+confidence_note should explain why our result is reliable or not.
 
 Status must be one of: keep, discard, crash
 
 The agent must never skip this step.
 
-## Ideas to explore
+## Experiment Queue (Feature Selection Focus)
+Run these in order, one at a time. Do not change the model.
+
+Base model (frozen): VotingClassifier HGBC(w=3)+RF(w=1) deep RF
+
+1a. All features, frozen model — run 1
+1b. All features, frozen model — run 2  
+1c. All features, frozen model — run 3
+2. Mutual information top 10
+4. Mutual information top 20
+5. Mutual information top 30
+6. RFE top 10
+7. RFE top 20
+8. RFE top 30
+9. Correlation filter threshold=0.9
+10. Correlation filter threshold=0.8
+11. L1/Lasso selection (vary regularization strength)
+12. Domain subset (founding team, revenue, sector, funding stage signals)
+
+After the full experiment queue is complete, identify the best performing feature selection method and repeat it 3 times to confirm stability.. Do not repeat any other experiments unless a crash occurs.
+
+If all queued experiments are complete, you may vary one feature selection parameter further. Do not change the model architecture.
+
+## Ideas to explore AFTER feature selection is complete
+(Do not run these until the experiment queue above is finished)
 
 - Different classifiers: LogisticRegression, RandomForestClassifier, GradientBoostingClassifier
 - Feature engineering: PolynomialFeatures, interaction terms
