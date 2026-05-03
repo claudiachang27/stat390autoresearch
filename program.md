@@ -60,27 +60,23 @@ Status must be one of: keep, discard, crash
 The agent must never skip this step.
 
 ## Experiment Queue (Feature Selection Focus)
-Run these in order, one at a time. Do not change the model.
+Run these in order, one at a time. Do not change the model architecture or weights.
 
-Base model (frozen): VotingClassifier HGBC(w=3)+RF(w=1) deep RF
+Baseline Consistency (All Features)
 
-1a. All features, frozen model — run 1
-1b. All features, frozen model — run 2  
-1c. All features, frozen model — run 3
-2. Mutual information top 10
-4. Mutual information top 20
-5. Mutual information top 30
-6. RFE top 10
-7. RFE top 20
-8. RFE top 30
-9. Correlation filter threshold=0.9
-10. Correlation filter threshold=0.8
-11. L1/Lasso selection (vary regularization strength)
-12. Domain subset (founding team, revenue, sector, funding stage signals)
+1a. Value: All features (Run 1)
+1b. Value: All features (Run 2)
+1c. Value: All features (Run 3)
 
-After the full experiment queue is complete, identify the best performing feature selection method and repeat it 3 times to confirm stability.. Do not repeat any other experiments unless a crash occurs.
+Mutual Information (MI) Sensitivity
 
-If all queued experiments are complete, you may vary one feature selection parameter further. Do not change the model architecture.
+2a. Variable: MI Feature Count | Value: 10
+2b. Variable: MI Feature Count | Value: 20
+2c. Variable: MI Feature Count | Value: 30
+
+After the full experiment queue is complete, identify the best performing feature selection method and repeat it 3 times to confirm stability. Do not repeat any other experiments unless a crash occurs.
+
+Once stability runs are logged, stop and wait for further instructions. Do not vary parameters further or change the model architecture.
 
 ## Ideas to explore AFTER feature selection is complete
 (Do not run these until the experiment queue above is finished)
