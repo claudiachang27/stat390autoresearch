@@ -4,9 +4,9 @@
 
 I will be predicting if a start-up will make it to Series A.
 
-**Metric**: validation AUC-ROC (higher is better).
+**Metric**: AUC-ROC (higher is better)
 
-**Data**: crunchbase CSVs (no download needed).
+**Data**: Crunchbase CSVs (no download needed)
 
 ## Project Structure
 
@@ -20,6 +20,8 @@ predictive-series-a/
 ├── results.tsv            # Log of all experiments: timestamp, features used, AUC-ROC
 ├── performance.png        # Plot showing AUC improving over time (iterations)
 ├── .gitignore             # Ignore local data files, pycache
+├── results.tsv             # Track metric, status, description of each experiment
+├── metrics_over_time.png   # Visualizes metric over time
 └── data/                   # Store Crunchbase CSV files
     └── crunchbase-acquisitions.csv
     └── crunchbase-companies.csv
@@ -27,7 +29,7 @@ predictive-series-a/
     └── crunchbase-rounds.csv
 ```
 
-**Key rule**: the agent may only modify `model.py`. Everything else is frozen.
+**Key rule**: the agent may only modify `model.py`, 'results.tsv', and 'metrics_over_time.png'. Everything else is frozen.
 
 ---
 
