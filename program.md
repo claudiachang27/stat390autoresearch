@@ -18,14 +18,18 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 ## Workflow
 
 ```
-1. Read current model.py
-2. Propose a modification
-3. Edit model.py
-4. Run: python run.py "description of change"
-5. Check val_auc in output
-6. If improved:  git add model.py && git commit -m "feat: <description>"
-7. If worse:     git checkout model.py   (revert)
-8. Repeat from step 1
+1. Read program.md for your instructions
+2. Read current model.py
+3. Propose one modification (e.g., different estimator, feature engineering, hyperparameter change), but you do not need to ask for permission to edit model.py.
+4. Edit model.py
+5. Run: python run.py "<short description of what you changed>"
+6. Compare the new val_auc to the current best.
+   - If improved: keep the change, note the new best.
+   - If worse: revert model.py to the previous version.
+7. Repeat from step 1. Try 3 different ideas.
+
+After all iterations, run `python prepare.py` to generate performance.png.
+Print a summary table of all experiments and which were kept vs discarded.
 ```
 
 ## Keep / Discard / Crash Rule
