@@ -14,22 +14,22 @@ I will be predicting if a start-up will make it to Series A.
 predictive-series-a/
 ├── README.md              # Setup and instructions on how to run agent
 ├── program.md             # Agent’s Goal: “Predict Series A success with AUC > 0.75
-├── prepare.py   # FROZEN: loads crunchbase CSVs, splits data, calculates AUC-ROC
-├── model.py        #AGENT-MUTABLE: agent tries XGBoost, RandomForest setups
-├── run.py            # FROZEN: executes one training loop, appends results to results.tsv
+├── prepare.py             # FROZEN: loads crunchbase CSVs, splits data, calculates AUC-ROC
+├── model.py               # AGENT-MUTABLE: builds model
+├── run.py                 # FROZEN: executes one training loop, appends results to results.tsv
 ├── results.tsv            # Log of all experiments: timestamp, features used, AUC-ROC
 ├── performance.png        # Plot showing AUC improving over time (iterations)
 ├── .gitignore             # Ignore local data files, pycache
-├── results.tsv             # Track metric, status, description of each experiment
-├── metrics_over_time.png   # Visualizes metric over time
-└── data/                   # Store Crunchbase CSV files
+├── results.tsv            # Track metric, status, description of each experiment
+├── metrics_over_time.png  # Visualizes metric over time
+└── data/                  # Store Crunchbase CSV files
     └── crunchbase-acquisitions.csv
     └── crunchbase-companies.csv
     └── crunchbase-investments.csv
     └── crunchbase-rounds.csv
 ```
 
-**Key rule**: the agent may only modify `model.py`, 'results.tsv', and 'metrics_over_time.png'. Everything else is frozen.
+**Key rule**: the agent may only modify `model.py`. Everything else is frozen.
 
 ---
 
