@@ -20,22 +20,23 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 ```
 1. Read program.md for your instructions
 2. Read current model.py
-3. Propose one modification (e.g., different estimator, feature engineering, hyperparameter change), but you do not need to ask for permission to edit model.py.
+3. Propose one modification (e.g., different estimator, feature engineering, hyperparameter change), but you do not need to ask for permission to edit model.py
 4. Edit model.py
 5. Run: python run.py "<short description of what you changed>"
-6. Compare the new val_auc to the current best.
-   - If improved: keep the change, note the new best.
-   - If worse: revert model.py to the previous version.
-7. Repeat from step 1. Try 3 different ideas.
+6. Compare the new val_auc to the current best:
+   - If improved: keep the change, note the new best
+   - If worse: revert model.py to the previous version
+7. Log the experiment in results.tsv. See "Logging" for more details
+8. Repeat from step 1. Try 3 different ideas (thus a total of 3 different experiments)
 
-After all iterations, run `python prepare.py` to generate performance.png.
-Print a summary table of all experiments and which were kept vs discarded.
+After all iterations, run `python prepare.py` to generate performance.png
+Print a summary table of all experiments and which were kept vs discarded
 ```
 
 ## Keep / Discard / Crash Rule
 - KEEP: val_auc strictly greater than the best val_auc in results.tsv → commit
 - DISCARD: val_auc less than or equal to best → git checkout model.py, no commit
-- CRASH: run.py errors or no new row appears in results.tsv → log a row manually with status="crash" and the error message, then git checkout model.py
+- CRASH: run.py errors or no new row appears in results.tsv → log a row manually with status = "crash" and the error message, then git checkout model.py
 
 ## Logging
 Every run must produce exactly one new row in results.tsv with fields:
