@@ -20,8 +20,6 @@ predictive-series-a/
 ├── results.tsv            # Log of all experiments: timestamp, features used, AUC-ROC
 ├── performance.png        # Plot showing AUC improving over time (iterations)
 ├── .gitignore             # Ignore local data files, pycache
-├── results.tsv            # Track metric, status, description of each experiment
-├── metrics_over_time.png  # Visualizes metric over time
 └── data/                  # Store Crunchbase CSV files
     └── crunchbase-acquisitions.csv
     └── crunchbase-companies.csv
