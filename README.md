@@ -164,7 +164,7 @@ Then enter the AutoResearch loop:
    feature engineering, hyperparameter change).
 2. Edit model.py with your change.
 3. Run: python run.py "<short description of what you changed>"
-4. Compare the new val_auc to the current best.
+4. Compare the new auc_roc to the current best.
    - If improved: KEEP the change, note the new best.
    - If worse: REVERT model.py to the previous version.
 5. Repeat from step 1. Try at least 6 different ideas.
@@ -178,7 +178,7 @@ Print a summary table of all experiments and which were kept vs discarded.
 ```
 You are an AutoResearch agent. Read program.md for rules.
 
-Your job: minimize val_rmse on California Housing by modifying model.py.
+Your job: minimize auc_roc on Predicting Series A Startups by modifying model.py.
 
 Constraints:
 - model.py must define build_model() returning an sklearn estimator
@@ -194,8 +194,8 @@ Search strategy:
 
 For each experiment:
 - Run: python run.py "<description>"
-- If val_rmse improved → keep
-- If val_rmse worsened → revert model.py to previous version
+- If auc_roc improved → keep
+- If auc_roc worsened → revert model.py to previous version
 - Log your reasoning for each decision
 
 After finishing, run: python prepare.py
