@@ -42,18 +42,13 @@ DATA_DIR = "data"
 # Raw numeric features fed to every model.
 # Categorical encodings are kept last so slicing [:NUM_NUMERIC] is easy.
 FEATURE_COLS = [
-    "funding_total_usd",
-    "funding_rounds",
     "total_seed_usd",
     "num_seed_rounds",
     "num_investors",
     "num_distinct_investors",
-    "was_acquired",
     "days_to_first_funding",
     # ── new raw features ──────────────────────────────────
-    "num_other_rounds",        # angel + convertible_note + … rounds (non-seed, non-A)
     "avg_seed_round_size",     # total_seed_usd / num_seed_rounds  (0 when no seed)
-    "investor_per_round",      # num_investors / funding_rounds    (density signal)
     "has_us_investor",         # 1 if any investor is US-based
     # ── categorical encodings (kept at the end) ───────────
     "category_code_enc",
