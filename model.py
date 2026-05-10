@@ -10,5 +10,5 @@ from sklearn.impute import SimpleImputer
 def build_model():
     return Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
-        ("model", GradientBoostingClassifier(n_estimators=200, random_state=42)),
+        ("model", GradientBoostingClassifier(n_estimators=200, max_depth=4, random_state=42)),
     ])
