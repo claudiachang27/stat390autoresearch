@@ -29,7 +29,7 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 7. Log the experiment in results.tsv. See "Logging" for more details
 8. Repeat from step 1. Try 3 different ideas (thus a total of 3 different experiments)
 
-After all iterations, run `python prepare.py` to generate performance.png
+After all iterations, run `python plot.py` to generate performance.png
 Print a summary table of all experiments and which were kept vs discarded
 ```
 
