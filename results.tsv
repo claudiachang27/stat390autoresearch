@@ -8,3 +8,29 @@ experiment_id	val_auc	status	variable_changed	value_tested	fixed_conditions	conf
 7	0.746527	keep	n_estimators	200	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, imputer median, lr=0.1, max_depth=3	first run
 8	0.751013	keep	max_depth	4	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, imputer median, lr=0.1	first run
 9	0.750967	discard	learning_rate	0.05	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, imputer median	first run
+10	0.750013	discard	subsample	0.8	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, lr=0.1, imputer median	first run
+11	0.748285	discard	n_estimators	300	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, max_depth=4, lr=0.1, imputer median	first run
+12	0.747884	discard	min_samples_leaf	4	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, lr=0.1, imputer median	first run
+13	0.750999	discard	preprocessor	QuantileTransformer_normal	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, lr=0.1	first run
+14	0.746938	discard	feature_engineering	PolynomialFeatures_degree2_interaction_only	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, lr=0.1	first run
+15	0.751392	keep	preprocessor	RobustScaler	seed 42, 80/20 split, dropped leaky cols, GradientBoostingClassifier, n_estimators=200, max_depth=4, lr=0.1	first run
+16	0.75099	discard	learning_rate	0.05	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=200, max_depth=4, RobustScaler	retry with RobustScaler
+17	0.739946	discard	learning_rate	0.2	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=200, max_depth=4, RobustScaler	first run
+18	0.747243	discard	max_depth	5	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=200, lr=0.1, RobustScaler	first run
+19	0.752348	keep	max_features	sqrt	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=200, max_depth=4, lr=0.1, RobustScaler	first run
+20	0.751953	discard	subsample	0.8	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=200, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+21	0.752913	keep	n_estimators	300	seed 42, 80/20 split, dropped leaky cols, GBC, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+22	0.752056	discard	n_estimators	400	seed 42, 80/20 split, dropped leaky cols, GBC, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+23	0.751295	discard	min_samples_split	5	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+24	0.746406	discard	classifier	HistGradientBoostingClassifier_defaults	seed 42, 80/20 split, dropped leaky cols, no scaler, handles missing natively	first run
+25	0.746771	discard	HistGBC_max_iter_max_depth	max_iter=300_max_depth=4	seed 42, 80/20 split, dropped leaky cols, HistGBC, lr=0.1	first run
+26	0.721878	discard	classifier	RandomForest_n300_max_features_sqrt_RobustScaler	seed 42, 80/20 split, dropped leaky cols, imputer median	first run
+27	0.749661	discard	max_depth	3	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_features=sqrt, lr=0.1, RobustScaler	first run
+28	0.747472	discard	max_features	0.5	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, lr=0.1, RobustScaler	first run
+29	0.750307	discard	learning_rate+n_estimators	lr=0.05_n=500	seed 42, 80/20 split, dropped leaky cols, GBC, max_depth=4, max_features=sqrt, RobustScaler	compensate lower lr with more trees
+30	0.700735	discard	classifier	ExtraTreesClassifier_n300_sqrt	seed 42, 80/20 split, dropped leaky cols, imputer median	first run
+31	0.723133	discard	classifier+features	LogisticRegression_C0.1_poly2	seed 42, 80/20 split, dropped leaky cols, RobustScaler, PolynomialFeatures degree=2	first run
+32	0.746604	discard	classifier	VotingClassifier_soft_GBC_RF	seed 42, 80/20 split, dropped leaky cols, RobustScaler, imputer median	first run
+33	0.751356	discard	min_samples_leaf	2	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+34	0.743804	discard	ccp_alpha	0.0001	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
+35	0.752876	discard	preprocessor	no_scaler	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1	ablation: confirm RobustScaler effect
