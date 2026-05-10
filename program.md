@@ -14,6 +14,7 @@ Maximize **AUC-ROC** on the Predicting Series A Startup task.
 6. Do not ask the user for confirmation mid-loop
 7. Make all keep/discard decisions autonomously based on results.tsv
 8. Only modify one variable value at a time and fix all other conditions.
+9. Explore one direction fully before switching — exhaust hyperparameter tuning on the current best model before trying a different model type. Only switch model type when further tuning yields no improvement.
 
 ## Workflow
 
