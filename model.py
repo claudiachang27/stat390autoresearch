@@ -12,5 +12,5 @@ def build_model():
     return Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
         ("scaler", RobustScaler()),
-        ("model", GradientBoostingClassifier(n_estimators=200, max_depth=4, max_features='sqrt', random_state=42)),
+        ("model", GradientBoostingClassifier(n_estimators=300, max_depth=4, max_features='sqrt', random_state=42)),
     ])
