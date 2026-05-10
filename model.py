@@ -3,7 +3,7 @@ EDITABLE -- The agent modifies this file.
 Define the model pipeline for Predicting Series A Startup (classification).
 The function build_model() must return an sklearn-compatible estimator.
 """
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
@@ -13,12 +13,8 @@ def build_model():
     return Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
         ("scaler", StandardScaler()),
-        ("model", HistGradientBoostingClassifier(
-            max_iter=300,
-            max_depth=6,
-            learning_rate=0.05,
-            min_samples_leaf=20,
-            class_weight="balanced",   # handles imbalance (most startups don't get Series A)
+        ("model", LogisticRegression(
             random_state=42,
+            max_iter=1000,
         )),
     ])
