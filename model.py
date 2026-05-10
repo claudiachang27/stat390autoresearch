@@ -6,9 +6,11 @@ The function build_model() must return an sklearn-compatible estimator.
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import RobustScaler
 
 def build_model():
     return Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", RobustScaler()),
         ("model", GradientBoostingClassifier(n_estimators=200, max_depth=4, random_state=42)),
     ])
