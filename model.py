@@ -10,7 +10,7 @@ from sklearn.preprocessing import RobustScaler
 
 def build_model():
     return Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
+        ("imputer", SimpleImputer(strategy="median", missing_values=-1, keep_empty_features=True)),
         ("scaler", RobustScaler()),
         ("model", GradientBoostingClassifier(n_estimators=300, max_depth=4, max_features='sqrt', random_state=42)),
     ])
