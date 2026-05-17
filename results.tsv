@@ -34,3 +34,10 @@ experiment_id	val_auc	status	variable_changed	value_tested	fixed_conditions	conf
 33	0.751356	discard	min_samples_leaf	2	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
 34	0.743804	discard	ccp_alpha	0.0001	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1, RobustScaler	first run
 35	0.752876	discard	preprocessor	no_scaler	seed 42, 80/20 split, dropped leaky cols, GBC, n_estimators=300, max_depth=4, max_features=sqrt, lr=0.1	ablation: confirm RobustScaler effect
+36	0.71561	discard	classifier	StackingClassifier_GBC+RF_LR-meta_cv3	8 features, GBC n300 depth4 sqrt RobustScaler, seed 42, 80/20 split	8-feature set post-leakage-fix
+37	0.711301	discard	loss	exponential	8 features, GBC n300 depth4 sqrt RobustScaler, seed 42, 80/20 split	8-feature set post-leakage-fix
+38	0.714265	discard	n_iter_no_change	20	8 features, GBC n300 depth4 sqrt RobustScaler, seed 42, 80/20 split	8-feature set post-leakage-fix
+39	0.714093	baseline	feature_set	8-feature-set-post-leakage-fix	GBC n300 depth4 sqrt lr=0.1 RobustScaler, seed 42, 80/20 split	new baseline after removing num_investors+num_distinct_investors as leaky
+40	0.71154	discard	preprocessing	VarianceThreshold_drop_4_dead_features	GBC n300 depth4 sqrt RobustScaler 8feat->4feat seed42	4 features had zero variance confirmed by EDA
+41	0.710812	discard	max_features	None_all_features_per_split	GBC n300 depth4 RobustScaler 8feat 4real seed42	dead features have 0 gain so effectively all 4 real features compete per split
+42	0.716829	keep	imputer_missing_values	missing_values=-1_treat_sentinel_as_NaN	GBC n300 depth4 sqrt RobustScaler 8feat seed42	beats 8-feat baseline 0.714093; run.py compared against stale leaky best
