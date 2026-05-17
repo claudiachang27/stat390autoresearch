@@ -44,8 +44,6 @@ DATA_DIR = "data"
 FEATURE_COLS = [
     "total_seed_usd",
     "num_seed_rounds",
-    "num_investors",
-    "num_distinct_investors",
     "days_to_first_funding",
     # ── new raw features ──────────────────────────────────
     "avg_seed_round_size",     # total_seed_usd / num_seed_rounds  (0 when no seed)
@@ -56,9 +54,12 @@ FEATURE_COLS = [
     "state_code_enc",
 ]
 
+# num_investors and num_distinct_investors removed: both aggregate across all
+# funding rounds (including post-Series A), introducing target leakage.
+
 # The categorical columns at the tail should NOT get polynomial expansion.
 # Everything before this index is treated as numeric for engineer_features().
-_N_NUMERIC = FEATURE_COLS.index("category_code_enc")   # 12
+_N_NUMERIC = FEATURE_COLS.index("category_code_enc")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
