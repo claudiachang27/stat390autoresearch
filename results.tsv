@@ -41,13 +41,13 @@ experiment_id	val_auc	status	variable_changed	value_tested	fixed_conditions	conf
 40	0.71154	discard	preprocessing	VarianceThreshold_drop_4_dead_features	GBC n300 depth4 sqrt RobustScaler 8feat->4feat seed42	4 features had zero variance confirmed by EDA
 41	0.710812	discard	max_features	None_all_features_per_split	GBC n300 depth4 RobustScaler 8feat 4real seed42	dead features have 0 gain so effectively all 4 real features compete per split
 42	0.716829	keep	imputer_missing_values	missing_values=-1_treat_sentinel_as_NaN	GBC n300 depth4 sqrt RobustScaler 8feat seed42	beats 8-feat baseline 0.714093; run.py compared against stale leaky best
-43	0.716829	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-44	0.719277	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-45	0.709298	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-46	0.720256	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-47	0.71944	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-48	0.72028	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-49	0.719792	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-50	0.720502	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-51	0.718855	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
-52	0.718338	discard	unspecified	unspecified	frozen model, seed 42, 80/20 split	no confidence note provided
+43	0.716829	discard	confirm_baseline	GBC_n300_depth4_clean_rerun	GBC n300 depth4 sqrt lr=0.1 RobustScaler 8feat sentinel_imputer seed42 80/20	re-confirmed clean baseline; tied with exp 42, not an improvement
+44	0.719277	keep	max_depth	3	GBC n300 max_features=sqrt lr=0.1 RobustScaler 8feat sentinel_imputer seed42 80/20	shallower trees improve on clean feature set
+45	0.709298	discard	max_depth	5	GBC n300 max_features=sqrt lr=0.1 RobustScaler 8feat sentinel_imputer seed42 80/20	deeper trees overfit on clean 8-feature set
+46	0.720256	keep	learning_rate+n_estimators	lr=0.05_n=500	GBC depth3 max_features=sqrt RobustScaler 8feat sentinel_imputer seed42 80/20	slower lr compensated by more trees improves AUC
+47	0.71944	discard	learning_rate+n_estimators	lr=0.03_n=800	GBC depth3 max_features=sqrt RobustScaler 8feat sentinel_imputer seed42 80/20	too slow lr hurts; diminishing returns beyond n=500
+48	0.72028	keep	n_estimators	600	GBC depth3 lr=0.05 max_features=sqrt RobustScaler 8feat sentinel_imputer seed42 80/20	slight gain from additional trees at lr=0.05
+49	0.719792	discard	subsample	0.8	GBC n600 depth3 lr=0.05 max_features=sqrt RobustScaler 8feat sentinel_imputer seed42 80/20	stochastic subsampling does not help on small clean feature set
+50	0.720502	keep	min_samples_leaf	4	GBC n600 depth3 lr=0.05 max_features=sqrt RobustScaler 8feat sentinel_imputer seed42 80/20	leaf regularization marginally improves; final best model
+51	0.718855	discard	max_features	0.6	GBC n600 depth3 lr=0.05 min_samples_leaf=4 RobustScaler 8feat sentinel_imputer seed42 80/20	wider feature fraction hurts; sqrt remains optimal
+52	0.718338	discard	imputer_strategy	mean	GBC n600 depth3 lr=0.05 min_samples_leaf=4 max_features=sqrt RobustScaler 8feat seed42 80/20	mean imputation worse than median for heavy-tailed seed funding amounts
